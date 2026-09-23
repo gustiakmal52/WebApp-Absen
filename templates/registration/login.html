@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Masuk · Hadir{% endblock %}
+{% block body_class %}login-page{% endblock %}
+{% block content %}
+<div class="login-layout">
+  <section class="login-story" aria-label="Tentang Hadir">
+    <a class="brand brand-light" href="#"><span class="brand-mark"><i></i><i></i><i></i></span><span>Hadir</span></a>
+    <div class="story-copy">
+      <span class="eyebrow light">SISTEM ABSENSI TERPADU</span>
+      <h1>Satu tatapan.<br><em>Langsung tercatat.</em></h1>
+      <p>Verifikasi biometrik wajah, radius kantor, dan waktu kerja.</p>
+    </div>
+    <div class="story-proof"><span class="pulse-dot"></span><span>Sistem siap menerima absensi</span></div>
+  </section>
+  <section class="login-panel">
+    <div class="login-form-wrap">
+      <nav class="portal-switch" aria-label="Pilih portal masuk">
+        <a href="{% url 'login' %}" {% if request.GET.portal != 'admin' %}aria-current="page"{% endif %}>Karyawan</a>
+        <a href="{% url 'login' %}?portal=admin" {% if request.GET.portal == 'admin' %}aria-current="page"{% endif %}>Admin</a>
+      </nav>
+      <span class="login-kicker">{% if request.GET.portal == 'admin' %}PORTAL ADMIN{% else %}PORTAL KARYAWAN{% endif %}</span>
+      <h2>Selamat datang.</h2>
+      <p class="muted">Masuk dengan ID dan password Anda.</p>
+      {% if form.errors %}<div class="form-alert">{% if form.non_field_errors %}{{ form.non_field_errors|striptags }}{% else %}ID pengguna atau password belum tepat.{% endif %}</div>{% endif %}
+      <form method="post" class="form-stack">
+        {% csrf_token %}
+        <input type="hidden" name="portal" value="{% if request.GET.portal == 'admin' %}admin{% else %}employee{% endif %}">
+        <label>{{ form.username.label }}{{ form.username }}</label>
+        <label>{{ form.password.label }}{{ form.password }}</label>
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+        <button class="button button-dark button-wide" type="submit">Masuk <span>→</span></button>
+      </form>
+      {% if request.GET.portal == 'admin' %}
+      <p class="login-help">Akses ini khusus administrator.</p>
+      {% elif allow_self_registration %}
+      <p class="login-help">Belum punya akun? <a href="{% url 'register' %}">Daftar sebagai karyawan</a></p>
+      {% endif %}
+    </div>
+    <p class="copyright">Sistem Absensi Biometrik</p>
+  </section>
+</div>
+{% endblock %}

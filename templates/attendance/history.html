@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Riwayat · Hadir{% endblock %}
+{% block content %}
+<div class="wide-page page-space">
+  <div class="section-heading"><div><span class="eyebrow">90 HARI TERAKHIR</span><h1>Riwayat absensi</h1><p class="page-lead">Semua catatan masuk dan pulang Anda.</p></div></div>
+  <div class="history-list">
+  {% for row in rows %}
+    <article class="history-row">
+      <time><strong>{{ row.work_date|date:"d" }}</strong><span>{{ row.work_date|date:"M"|upper }}</span></time>
+      <div class="history-day"><strong>{{ row.work_date|date:"l" }}</strong><span>{{ row.office.name }}</span></div>
+      {% for event in row.events.all %}<div class="history-time"><small>{{ event.get_kind_display|upper }}</small><strong>{{ event.occurred_at|date:"H:i" }}</strong><span class="result-dot {{ event.result|lower }}">{{ event.get_result_display }}</span></div>{% endfor %}
+      <span class="history-status {% if row.status == 'COMPLETE' %}complete{% endif %}">{{ row.get_status_display }}</span>
+    </article>
+  {% empty %}<div class="empty-state"><span>⌁</span><h2>Belum ada riwayat</h2><p>Catatan absensi pertama Anda akan muncul di sini.</p></div>{% endfor %}
+  </div>
+</div>
+{% endblock %}

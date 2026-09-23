@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Ruang Admin · Hadir{% endblock %}
+{% block content %}
+<div class="wide-page page-space admin-home">
+  <span class="eyebrow">RUANG ADMIN</span><h1>Kendalikan operasional.</h1><p class="page-lead">Kelola karyawan, outlet, izin, dan rekap kehadiran dari satu tempat.</p>
+  <div class="admin-stats">
+    <div><small>CATATAN HARI INI</small><strong>{{ today_count|stringformat:"02d" }}</strong></div>
+    <div class="pending-leave"><small>MENUNGGU IZIN</small><strong>{{ leave_pending_count|default:0|stringformat:"02d" }}</strong></div>
+  </div>
+  <div class="admin-actions">
+    <a href="/admin/attendance/attendance/"><span>01</span><div><h2>Rekap absensi</h2><p>Lihat, ekspor, atau hapus data uji</p></div><b>→</b></a>
+    <a href="/admin/attendance/employee/"><span>02</span><div><h2>Karyawan</h2><p>Kelola akun dan outlet penugasan</p></div><b>→</b></a>
+    <a href="/admin/attendance/office/"><span>03</span><div><h2>Outlet & jadwal</h2><p>Atur titik lokasi, radius, dan jam kerja</p></div><b>→</b></a>
+    <a href="/admin/attendance/leaverequest/"><span>04</span><div><h2>Persetujuan izin / cuti</h2><p>Tinjau surat sakit dan permohonan izin</p></div><b>→</b></a>
+  </div>
+</div>
+{% endblock %}

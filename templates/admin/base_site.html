@@ -1,0 +1,5 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/admin.css' %}">{% endblock %}
+{% block branding %}<div id="site-name"><a href="{% url 'admin:index' %}"><span class="admin-logo">H</span> Hadir <small>RUANG ADMIN</small></a></div>{% endblock %}
+{% block nav-global %}<a class="back-to-app" href="/">← Kembali ke aplikasi</a>{% endblock %}

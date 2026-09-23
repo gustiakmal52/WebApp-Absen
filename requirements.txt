@@ -1,0 +1,6 @@
+Django==5.2.17
+Pillow>=11,<13
+cryptography>=45,<47
+opencv-python-headless>=4.10,<5
+gunicorn>=23,<24
+psycopg[binary]>=3.2,<4

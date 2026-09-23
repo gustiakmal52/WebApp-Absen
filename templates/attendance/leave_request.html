@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Pengajuan Izin / Cuti · Hadir{% endblock %}
+{% block content %}
+<div class="wide-page page-space">
+  <div class="section-heading leave-heading">
+    <div>
+      <a href="{% url 'dashboard' %}" class="back-link">← Kembali ke Beranda</a>
+      <span class="eyebrow">KETIDAKHADIRAN</span>
+      <h1>Pengajuan izin, sakit, atau cuti</h1>
+      <p class="page-lead">Ajukan ketidakhadiran dan pantau persetujuannya di sini.</p>
+    </div>
+  </div>
+
+  <div class="leave-grid">
+    <section class="surface leave-form">
+      <h2>Formulir pengajuan</h2>
+      <form method="post" enctype="multipart/form-data" class="form-stack">
+        {% csrf_token %}
+        <label>{{ form.kind.label }}{{ form.kind }}</label>
+        <div class="date-fields">
+          <label>{{ form.start_date.label }}{{ form.start_date }}</label>
+          <label>{{ form.end_date.label }}{{ form.end_date }}</label>
+        </div>
+        <label>{{ form.reason.label }}{{ form.reason }}</label>
+        <label>
+          {{ form.attachment.label }}
+          {{ form.attachment }}
+          <small>Opsional: PDF, JPG, atau PNG, maksimal 5 MB.</small>
+        </label>
+
+        {% if form.errors %}
+        <div class="form-alert">
+          {% for field, errors in form.errors.items %}<p>{{ field }}: {{ errors|join:", " }}</p>{% endfor %}
+        </div>
+        {% endif %}
+
+        <button type="submit" class="button button-dark button-wide">Kirim pengajuan <span>→</span></button>
+      </form>
+    </section>
+
+    <section class="leave-history">
+      <h2>Riwayat pengajuan</h2>
+      <div class="leave-list">
+        {% for leave in my_leaves %}
+        <article class="leave-row">
+          <div>
+            <strong>{{ leave.get_kind_display }}</strong>
+            <span class="leave-status {{ leave.status|lower }}">{{ leave.get_status_display }}</span>
+          </div>
+          <p class="leave-date">{{ leave.start_date|date:"d M Y" }} – {{ leave.end_date|date:"d M Y" }}</p>
+          <p>{{ leave.reason }}</p>
+          {% if leave.attachment %}<a class="attachment-link" href="{{ leave.attachment.url }}">Unduh lampiran</a>{% endif %}
+          {% if leave.review_notes %}<div class="review-notes">Catatan: {{ leave.review_notes }}</div>{% endif %}
+        </article>
+        {% empty %}<div class="leave-empty">Belum ada riwayat pengajuan izin.</div>{% endfor %}
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

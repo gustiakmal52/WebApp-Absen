@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Daftar karyawan · Hadir{% endblock %}
+{% block body_class %}login-page{% endblock %}
+{% block content %}
+<div class="login-layout">
+  <section class="login-story" aria-label="Pendaftaran karyawan Hadir">
+    <a class="brand brand-light" href="{% url 'login' %}"><span class="brand-mark"><i></i><i></i><i></i></span><span>Hadir</span></a>
+    <div class="story-copy">
+      <span class="eyebrow light">PENDAFTARAN KARYAWAN</span>
+      <h1>Pilih outlet.<br><em>Langsung aktif.</em></h1>
+      <p>Pilih outlet tempat Anda bekerja. GPS baru diwajibkan saat melakukan absensi.</p>
+    </div>
+    <div class="story-proof"><span class="pulse-dot"></span><span>Tidak perlu berada di outlet saat mendaftar</span></div>
+  </section>
+  <section class="login-panel">
+    <div class="login-form-wrap">
+      <a class="back-link" href="{% url 'login' %}">← Kembali ke login</a>
+      <span class="login-kicker">AKUN KARYAWAN</span>
+      <h2>Daftar akun.</h2>
+      <p class="muted">Pilih outlet tempat Anda bekerja.</p>
+      {% if form.errors %}
+      <div class="form-alert">{% for field, errors in form.errors.items %}<p>{{ errors|join:", " }}</p>{% endfor %}</div>
+      {% endif %}
+      <form method="post" class="form-stack">
+        {% csrf_token %}
+        <label>{{ form.username.label }}{{ form.username }}</label>
+        <label>{{ form.full_name.label }}{{ form.full_name }}</label>
+        <label>{{ form.office.label }}{{ form.office }}</label>
+        <label>Password{{ form.password1 }}</label>
+        <label>Ulangi password{{ form.password2 }}</label>
+        <button class="button button-dark button-wide" type="submit">Daftar akun <span>→</span></button>
+      </form>
+    </div>
+  </section>
+</div>
+{% endblock %}

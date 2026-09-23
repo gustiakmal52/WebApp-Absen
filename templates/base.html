@@ -1,0 +1,52 @@
+{% load static %}
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#171a17">
+  <title>{% block title %}Hadir{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}?v=20260922">
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  {% if user.is_authenticated %}
+  <header class="topbar">
+    <a class="brand" href="{% url 'dashboard' %}" aria-label="Hadir, beranda">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>Hadir</span>
+    </a>
+    <div class="topbar-meta">
+      <div class="user-copy">
+        <strong>{{ user.full_name }}</strong>
+        <span>
+          {% if user.role == 'ADMIN' %}
+            <span style="color: var(--acid-dark); background: var(--acid); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px;">ADMINISTRATOR</span>
+          {% else %}
+            {{ user.office.name|default:"Karyawan" }}
+          {% endif %}
+        </span>
+      </div>
+      <span class="avatar" aria-hidden="true">{{ user.full_name|first|upper }}</span>
+
+      {% if user.role == 'ADMIN' %}
+      <a href="/admin/" class="button button-dark" style="min-height: 38px; padding: 0 14px; font-size: 12px; gap: 6px;">
+        Panel Admin <span>→</span>
+      </a>
+      {% endif %}
+
+      <form method="post" action="{% url 'logout' %}" style="display: inline;">{% csrf_token %}
+        <button class="icon-button" title="Keluar / Logout" aria-label="Keluar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4M14 8l4 4-4 4M18 12H9"/></svg>
+        </button>
+      </form>
+    </div>
+  </header>
+  {% endif %}
+
+  {% if messages %}<div class="toast-stack">{% for message in messages %}<div class="toast">{{ message }}</div>{% endfor %}</div>{% endif %}
+  <main class="app-main">{% block content %}{% endblock %}</main>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

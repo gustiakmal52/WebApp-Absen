@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Beranda · Hadir{% endblock %}
+{% block content %}
+<div class="dashboard-shell" data-capture-mode="attendance" data-office-timezone="{{ user.office.timezone|default:'' }}">
+  <section class="welcome-row">
+    <div><span class="eyebrow">{{ today|date:"l, d F Y"|upper }}</span><h1>Halo, {{ user.full_name|truncatechars:28 }}.</h1><p>Siap memulai hari kerja?</p></div>
+    <div class="live-clock"><strong id="live-time">--:--</strong><span id="live-zone"></span></div>
+  </section>
+
+  {% if active_leave %}
+  <div class="notice-bar leave-notice">
+    <span class="notice-icon">🌿</span>
+    <span>
+      <strong>Status Hari Ini: {{ active_leave.get_kind_display }}</strong>
+      <small>Pengajuan Anda ({{ active_leave.start_date|date:"d M" }} - {{ active_leave.end_date|date:"d M" }}) telah disetujui. Anda tidak diwajibkan absensi.</small>
+    </span>
+  </div>
+  {% elif face_status != 'active' %}
+  <a class="notice-bar" href="{% url 'enrollment' %}">
+    <span class="notice-icon">◎</span><span><strong>Daftarkan wajah sebelum mulai absen</strong><small>Profil langsung aktif setelah perekaman berhasil.</small></span><b>→</b>
+  </a>
+  {% endif %}
+
+  <div class="dashboard-grid">
+    <section class="attendance-hero">
+      <div class="hero-topline"><span>Status hari ini</span><span class="status-chip {% if attendance.status == 'COMPLETE' %}done{% endif %}"><i></i>{{ attendance.get_status_display|default:"Belum absen" }}</span></div>
+      <div class="time-track">
+        <div class="time-event {% if events.CHECK_IN %}complete{% endif %}"><span class="track-node"></span><div><small>MASUK</small><strong>{% if events.CHECK_IN %}{{ events.CHECK_IN.occurred_at|date:"H:i" }}{% else %}— —{% endif %}</strong><em>{{ events.CHECK_IN.get_result_display|default:"Belum tercatat" }}</em></div></div>
+        <div class="track-line"></div>
+        <div class="time-event {% if events.CHECK_OUT %}complete{% endif %}"><span class="track-node"></span><div><small>PULANG</small><strong>{% if events.CHECK_OUT %}{{ events.CHECK_OUT.occurred_at|date:"H:i" }}{% else %}— —{% endif %}</strong><em>{{ events.CHECK_OUT.get_result_display|default:"Belum tercatat" }}</em></div></div>
+      </div>
+      {% if face_status == 'active' and not events.CHECK_IN %}
+      <button class="clock-button" data-start-attendance="CHECK_IN"><span class="scan-glyph"><i></i></span><span><small>VERIFIKASI WAJAH</small>Absen masuk</span><b>→</b></button>
+      <button class="clock-button locked" disabled><span><small>TERSEDIA SETELAH MASUK</small>Absen pulang</span><b>→</b></button>
+      {% elif face_status == 'active' and events.CHECK_IN and not events.CHECK_OUT %}
+      <button class="clock-button checkout" data-start-attendance="CHECK_OUT"><span class="scan-glyph"><i></i></span><span><small>VERIFIKASI WAJAH</small>Absen pulang</span><b>→</b></button>
+      {% elif events.CHECK_OUT %}
+      <div class="day-complete"><span>✓</span><div><strong>Hari kerja selesai</strong><small>Sampai jumpa besok. Istirahat yang cukup.</small></div></div>
+      {% else %}
+      <a class="clock-button disabled" href="{% url 'enrollment' %}"><span class="scan-glyph"><i></i></span><span><small>WAJAH BELUM AKTIF</small>Siapkan profil wajah</span><b>→</b></a>
+      <button class="clock-button locked" disabled><span><small>WAJAH BELUM AKTIF</small>Absen pulang</span><b>→</b></button>
+      {% endif %}
+
+      <nav class="quick-actions" aria-label="Menu karyawan">
+        <a href="{% url 'history' %}">Riwayat absensi</a>
+        <a href="{% url 'leave_request' %}">Ajukan izin</a>
+        <a href="{% url 'enrollment' %}">Profil wajah</a>
+      </nav>
+    </section>
+
+    <aside class="work-card">
+      <div class="office-art"><span></span><span></span><span></span><i></i></div>
+
+      <span class="eyebrow">OUTLET TERDAFTAR</span><h2>{{ user.office.name|default:"Belum dipilih" }}</h2><p>{{ user.office.address|default:"Pilih outlet melalui data akun karyawan." }}</p>
+      <p>Lokasi dan jadwal outlet diatur oleh administrator.</p>
+      <dl><div><dt>Jadwal</dt><dd>{{ user.office.start_time|time:"H:i" }} – {{ user.office.end_time|time:"H:i" }}</dd></div><div><dt>Radius</dt><dd>{{ user.office.radius_m }} meter</dd></div></dl>
+      <div class="location-state"><span class="pulse-dot"></span>Outlet terdekat dan radius GPS diverifikasi saat absensi</div>
+    </aside>
+  </div>
+
+  <section class="capture-overlay" id="capture-overlay" hidden aria-live="polite">
+    <div class="capture-sheet">
+      <button class="capture-close" id="capture-close" aria-label="Tutup">×</button>
+      <div class="camera-frame"><video id="camera-video" autoplay playsinline muted></video><canvas id="camera-canvas" hidden></canvas><div class="face-guide"><i></i><i></i><i></i><i></i></div><span class="camera-security">● LIVE · TERENKRIPSI</span></div>
+      <div class="capture-copy"><span class="capture-step" id="capture-step">MENYIAPKAN KAMERA</span><h2 id="capture-title">Posisikan wajah</h2><p id="capture-message">Pastikan wajah terlihat jelas dan lepaskan masker.</p><div class="capture-progress"><i id="capture-progress"></i></div></div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/capture.js' %}" type="module"></script>{% endblock %}
