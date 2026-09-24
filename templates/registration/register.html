@@ -7,7 +7,7 @@
     <a class="brand brand-light" href="{% url 'login' %}"><span class="brand-mark"><i></i><i></i><i></i></span><span>Hadir</span></a>
     <div class="story-copy">
       <span class="eyebrow light">PENDAFTARAN KARYAWAN</span>
-      <h1>Pilih outlet.<br><em>Langsung aktif.</em></h1>
+      <h1>Buat akun karyawan untuk outlet Anda.</h1>
       <p>Pilih outlet tempat Anda bekerja. GPS baru diwajibkan saat melakukan absensi.</p>
     </div>
     <div class="story-proof"><span class="pulse-dot"></span><span>Tidak perlu berada di outlet saat mendaftar</span></div>
@@ -16,7 +16,7 @@
     <div class="login-form-wrap">
       <a class="back-link" href="{% url 'login' %}">← Kembali ke login</a>
       <span class="login-kicker">AKUN KARYAWAN</span>
-      <h2>Daftar akun.</h2>
+      <h2>Daftar akun</h2>
       <p class="muted">Pilih outlet tempat Anda bekerja.</p>
       {% if form.errors %}
       <div class="form-alert">{% for field, errors in form.errors.items %}<p>{{ errors|join:", " }}</p>{% endfor %}</div>

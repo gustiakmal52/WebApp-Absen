@@ -2,7 +2,7 @@
 {% block title %}Ruang Admin · Hadir{% endblock %}
 {% block content %}
 <div class="wide-page page-space admin-home">
-  <span class="eyebrow">RUANG ADMIN</span><h1>Kendalikan operasional.</h1><p class="page-lead">Kelola karyawan, outlet, izin, dan rekap kehadiran dari satu tempat.</p>
+  <span class="eyebrow">RUANG ADMIN</span><h1>Operasional hari ini</h1><p class="page-lead">Kelola karyawan, outlet, izin, dan rekap kehadiran dari satu tempat.</p>
   <div class="admin-stats">
     <div><small>CATATAN HARI INI</small><strong>{{ today_count|stringformat:"02d" }}</strong></div>
     <div class="pending-leave"><small>MENUNGGU IZIN</small><strong>{{ leave_pending_count|default:0|stringformat:"02d" }}</strong></div>

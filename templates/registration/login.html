@@ -6,9 +6,9 @@
   <section class="login-story" aria-label="Tentang Hadir">
     <a class="brand brand-light" href="#"><span class="brand-mark"><i></i><i></i><i></i></span><span>Hadir</span></a>
     <div class="story-copy">
-      <span class="eyebrow light">SISTEM ABSENSI TERPADU</span>
-      <h1>Satu tatapan.<br><em>Langsung tercatat.</em></h1>
-      <p>Verifikasi biometrik wajah, radius kantor, dan waktu kerja.</p>
+      <span class="eyebrow light">ABSENSI KARYAWAN</span>
+      <h1>Masuk dan pulang tercatat dengan jelas.</h1>
+      <p>Verifikasi wajah dan lokasi membantu memastikan setiap catatan absensi berasal dari orang dan tempat yang tepat.</p>
     </div>
     <div class="story-proof"><span class="pulse-dot"></span><span>Sistem siap menerima absensi</span></div>
   </section>
@@ -19,7 +19,7 @@
         <a href="{% url 'login' %}?portal=admin" {% if request.GET.portal == 'admin' %}aria-current="page"{% endif %}>Admin</a>
       </nav>
       <span class="login-kicker">{% if request.GET.portal == 'admin' %}PORTAL ADMIN{% else %}PORTAL KARYAWAN{% endif %}</span>
-      <h2>Selamat datang.</h2>
+      <h2>Selamat datang</h2>
       <p class="muted">Masuk dengan ID dan password Anda.</p>
       {% if form.errors %}<div class="form-alert">{% if form.non_field_errors %}{{ form.non_field_errors|striptags }}{% else %}ID pengguna atau password belum tepat.{% endif %}</div>{% endif %}
       <form method="post" class="form-stack">

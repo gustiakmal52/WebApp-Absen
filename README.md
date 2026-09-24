@@ -6,6 +6,18 @@ Kode aplikasi tersedia dengan [lisensi MIT](LICENSE). Setiap pengelola perlu men
 
 Model wajah perlu diunduh seperti langkah berikut. Database, akun, bukti foto, lampiran pribadi, dan secret tidak disertakan di repository.
 
+## Tampilan
+
+Data pada gambar berikut adalah data demonstrasi lokal dan tidak termasuk dalam repository.
+
+| Login karyawan | Dashboard absensi |
+| --- | --- |
+| ![Halaman login karyawan Hadir](docs/screenshots/01-login.png) | ![Dashboard absensi karyawan Hadir](docs/screenshots/02-dashboard.png) |
+
+| Riwayat absensi | Tampilan ponsel |
+| --- | --- |
+| ![Riwayat absensi karyawan Hadir](docs/screenshots/03-history.png) | ![Dashboard Hadir pada layar ponsel](docs/screenshots/04-mobile-dashboard.png) |
+
 ## Lokal
 
 Jalankan dari direktori proyek, dengan Python 3.10+:
